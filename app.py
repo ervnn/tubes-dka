@@ -209,7 +209,7 @@ def label_risiko(score):
 # ─── Membership Function Plots ──────────────────────────────────────────────────
 
 def plot_mf(title, x_range, members, xlabel):
-    fig, ax = plt.subplots(figsize=(4.5, 2.2))
+    fig, ax = plt.subplots(figsize=(3.8, 2.0))
     fig.patch.set_facecolor('#161b22')
     ax.set_facecolor('#0f1117')
     colors = ['#38bdf8', '#a78bfa', '#f472b6', '#34d399']
@@ -218,12 +218,12 @@ def plot_mf(title, x_range, members, xlabel):
         ax.fill_between(xs, ys, alpha=0.08, color=colors[i % len(colors)])
     ax.set_xlim(x_range)
     ax.set_ylim(-0.05, 1.15)
-    ax.set_title(title, color='#94a3b8', fontsize=9, pad=6)
+    ax.set_title(title, color='#94a3b8', fontsize=8, pad=6)
     ax.set_xlabel(xlabel, color='#94a3b8', fontsize=8)
     ax.tick_params(colors='#4a5568', labelsize=7)
     for spine in ax.spines.values():
         spine.set_edgecolor('#1e2a35')
-    ax.legend(fontsize=7, loc='upper right',
+    ax.legend(fontsize=6, loc='upper right',
               facecolor='#161b22', edgecolor='#1e2a35', labelcolor='#94a3b8')
     plt.tight_layout()
     return fig
@@ -260,7 +260,7 @@ def plot_output_mf(score_mamdani, score_sugeno):
     sedang_y = [mu_segitiga(v, 35, 50, 65)        for v in x]
     tinggi_y = [mu_trapesium(v, 55, 75, 100, 100) for v in x]
 
-    fig, ax = plt.subplots(figsize=(6, 2.8))
+    fig, ax = plt.subplots(figsize=(8, 2.5))
     fig.patch.set_facecolor('#161b22')
     ax.set_facecolor('#0f1117')
     ax.plot(x, rendah_y, color='#2dd4bf', lw=1.8, label='Rendah')
@@ -369,26 +369,58 @@ with tab_pred:
 # ── TAB 2: Fungsi Keanggotaan ────────────────────────────────────────────────────
 with tab_mf:
     st.markdown("#### Fungsi Keanggotaan Variabel Input")
+
     fig_age, fig_bmi, fig_bp = build_mf_plots()
-    c1, c2, c3 = st.columns(3)
-    with c1: st.pyplot(fig_age)
-    with c2: st.pyplot(fig_bmi)
-    with c3: st.pyplot(fig_bp)
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+        st.pyplot(fig_age, use_container_width=True)
+
+    with c2:
+        st.pyplot(fig_bmi, use_container_width=True)
+
+    st.pyplot(fig_bp, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### Fungsi Keanggotaan Variabel Output")
+
     x = np.linspace(0, 100, 500)
-    rendah_y = [mu_trapesium(v, 0, 0, 25, 45)    for v in x]
-    sedang_y = [mu_segitiga(v, 35, 50, 65)        for v in x]
+
+    rendah_y = [mu_trapesium(v, 0, 0, 25, 45) for v in x]
+    sedang_y = [mu_segitiga(v, 35, 50, 65) for v in x]
     tinggi_y = [mu_trapesium(v, 55, 75, 100, 100) for v in x]
-    fig_out = plot_mf("Output: Skor Risiko Kardiovaskular", (0,100),
-        [("Rendah", x, rendah_y), ("Sedang", x, sedang_y), ("Tinggi", x, tinggi_y)], "Skor Risiko (0–100)")
-    st.pyplot(fig_out)
+
+    fig, ax = plt.subplots(figsize=(8, 2.8))
+
+    fig.patch.set_facecolor('#161b22')
+    ax.set_facecolor('#0f1117')
+
+    ax.plot(x, rendah_y, color='#2dd4bf', lw=2, label='Rendah')
+    ax.plot(x, sedang_y, color='#f59e0b', lw=2, label='Sedang')
+    ax.plot(x, tinggi_y, color='#f87171', lw=2, label='Tinggi')
+
+    ax.set_xlim(0, 100)
+    ax.set_ylim(-0.05, 1.15)
+
+    ax.set_title("Output: Skor Risiko Kardiovaskular",color='#94a3b8',fontsize=10)
+    ax.set_xlabel("Skor Risiko (0–100)",color='#94a3b8', fontsize=8)
+
+    ax.tick_params(colors='#4a5568')
+
+    for spine in ax.spines.values():
+        spine.set_edgecolor('#1e2a35')
+
+
+    ax.legend(fontsize=7,facecolor='#161b22',edgecolor='#1e2a35',labelcolor='#94a3b8')
+    plt.tight_layout()
+
+    st.pyplot(fig, use_container_width=True)
 
     st.markdown("""
     **Keterangan fungsi keanggotaan:**
-    - **Trapesium** → digunakan untuk kategori di tepi (Muda, Tua, BMI Kurang, BMI Lebih, dsb.)
-    - **Segitiga** → digunakan untuk kategori tengah (Umur Sedang, BMI Normal, Output Sedang)
+    - Trapesium → kategori tepi
+    - Segitiga → kategori tengah
     """)
 
 # ── TAB 3: Rule Base ──────────────────────────────────────────────────────────────
