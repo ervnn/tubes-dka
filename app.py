@@ -416,7 +416,7 @@ with tab_rules:
 # ── TAB 4: Evaluasi Batch ──────────────────────────────────────────────────────────
 with tab_batch:
     st.markdown("#### Evaluasi Performa pada Dataset")
-    st.info("Upload file `cardio_train.csv` (separator: `;`) untuk evaluasi batch, atau gunakan data bawaan.")
+    st.info("Upload file `cardio_train.csv`")
 
     uploaded = st.file_uploader("Upload CSV Dataset", type=["csv"])
 
