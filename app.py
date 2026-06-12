@@ -250,7 +250,7 @@ def build_mf_plots():
     bp_normal_y = [mu_trapesium(v, 0, 0, 115, 125)   for v in x_bp]
     bp_tinggi_y = [mu_trapesium(v, 120, 140, 300, 300) for v in x_bp]
     fig_bp = plot_mf("Variabel Tekanan Darah Sistolik", (80, 200),
-        [("Normal", x_bp, bp_normal_y), ("Tinggi", x_bp, bp_tinggi_y)], "mmHg")
+        [("Normal", x_bp, bp_normal_y), ("Tinggi", x_bp, bp_tinggi_y)], "Tekanan Darah(mmHg)")
 
     return fig_age, fig_bmi, fig_bp
 
@@ -372,7 +372,7 @@ with tab_mf:
 
     fig_age, fig_bmi, fig_bp = build_mf_plots()
 
-    c1, c2 = st.columns(2)
+    c1, c2, c3 = st.columns(3)
 
     with c1:
         st.pyplot(fig_age, use_container_width=True)
@@ -380,7 +380,8 @@ with tab_mf:
     with c2:
         st.pyplot(fig_bmi, use_container_width=True)
 
-    st.pyplot(fig_bp, use_container_width=True)
+    with c3:
+        st.pyplot(fig_bp, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### Fungsi Keanggotaan Variabel Output")
