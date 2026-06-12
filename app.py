@@ -180,7 +180,7 @@ def evaluasi_inferensi(fz):
 def defuzz_mamdani(rules):
     agregat = {k: max((v for o, v, _ in rules if o == k), default=0) for k in ['Rendah','Sedang','Tinggi']}
     pembilang = penyebut = 0.0
-    for z in range(0, 101, 1):
+    for z in range(0, 101, 2):
         mu_r = min(agregat['Rendah'], mu_trapesium(z, 0, 0, 25, 45))
         mu_s = min(agregat['Sedang'], mu_segitiga(z, 35, 50, 65))
         mu_t = min(agregat['Tinggi'], mu_trapesium(z, 55, 75, 100, 100))
